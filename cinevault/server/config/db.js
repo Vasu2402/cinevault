@@ -14,11 +14,11 @@ const sequelize = process.env.DB_URL
       define: { timestamps: true, underscored: false },
     })
   : new Sequelize(
-      process.env.DB_NAME,
-      process.env.DB_USER,
-      process.env.DB_PASS,
+      process.env.DB_NAME || 'cinevault',
+      process.env.DB_USER || 'root',
+      process.env.DB_PASS || '',
       {
-        host: process.env.DB_HOST,
+        host: process.env.DB_HOST || 'localhost',
         port: process.env.DB_PORT || 3306,
         dialect: 'mysql',
         logging: process.env.NODE_ENV === 'development' ? console.log : false,
