@@ -1,0 +1,11 @@
+{
+  "name": "cinevault",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "npm --prefix cinevault/server start",
+    "dev": "npm --prefix cinevault/server run dev",
+    "seed": "npm --prefix cinevault/server run seed",
+    "seed:food": "npm --prefix cinevault/server run seed:food"
+  }
+}

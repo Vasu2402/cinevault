@@ -1,0 +1,234 @@
+/* ═══════════════════════════════════════════════════════════════
+   CineVault — Animations & Transitions
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Fade In Animations ─────────────────────────────────── */
+.cv-fade-in {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+.cv-fade-in-up {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.cv-fade-in-down {
+  animation: fadeInDown 0.5s ease forwards;
+}
+
+.cv-fade-in-left {
+  animation: fadeInLeft 0.6s ease forwards;
+}
+
+.cv-fade-in-right {
+  animation: fadeInRight 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Stagger Delay Classes ──────────────────────────────── */
+.cv-delay-1 { animation-delay: 0.1s; }
+.cv-delay-2 { animation-delay: 0.2s; }
+.cv-delay-3 { animation-delay: 0.3s; }
+.cv-delay-4 { animation-delay: 0.4s; }
+.cv-delay-5 { animation-delay: 0.5s; }
+.cv-delay-6 { animation-delay: 0.6s; }
+
+/* ── Scale Animations ───────────────────────────────────── */
+.cv-scale-in {
+  animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ── Pulse ──────────────────────────────────────────────── */
+.cv-pulse {
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* ── Glow Pulse ─────────────────────────────────────────── */
+.cv-glow-pulse {
+  animation: glowPulse 3s ease infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(229, 9, 20, 0.1); }
+  50% { box-shadow: 0 0 30px rgba(229, 9, 20, 0.25); }
+}
+
+/* ── Float ──────────────────────────────────────────────── */
+.cv-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ── Slide In ───────────────────────────────────────────── */
+.cv-slide-up {
+  animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Shimmer for loading text ───────────────────────────── */
+.cv-shimmer {
+  background: linear-gradient(110deg,
+    transparent 20%,
+    rgba(255,255,255,0.05) 40%,
+    rgba(255,255,255,0.1) 50%,
+    rgba(255,255,255,0.05) 60%,
+    transparent 80%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+/* ── Bounce ─────────────────────────────────────────────── */
+.cv-bounce {
+  animation: bounce 0.5s ease;
+}
+
+@keyframes bounce {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.15); }
+  60% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+/* ── Seat Pop ───────────────────────────────────────────── */
+.cv-seat-pop {
+  animation: seatPop 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes seatPop {
+  0% { transform: scale(0.8); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1.05); }
+}
+
+/* ── Confetti Burst (booking success) ───────────────────── */
+.cv-confetti {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── Intersection Observer Based (delay reveal) ─────────── */
+[data-animate] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-animate].visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Progress Bar ───────────────────────────────────────── */
+.cv-progress-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--cv-bg-tertiary);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.cv-progress-fill {
+  height: 100%;
+  background: var(--cv-gradient-red);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+/* ── Typing Dot Animation ───────────────────────────────── */
+.cv-typing-dots {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+.cv-typing-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cv-text-muted);
+  animation: typingDot 1.4s infinite;
+}
+.cv-typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.cv-typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingDot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
+
+/* ── Ripple Effect ──────────────────────────────────────── */
+.cv-ripple {
+  position: relative;
+  overflow: hidden;
+}
+.cv-ripple::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.15) 10%, transparent 10.01%);
+  background-repeat: no-repeat;
+  background-position: 50%;
+  transform: scale(10);
+  opacity: 0;
+  transition: transform 0.5s, opacity 0.8s;
+}
+.cv-ripple:active::after {
+  transform: scale(0);
+  opacity: 0.3;
+  transition: 0s;
+}

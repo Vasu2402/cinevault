@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sign in or create your CineVault account to book movie tickets.">
+  <title>Sign In — CineVault</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/animations.css">
+</head>
+<body>
+  <div class="cv-auth-container">
+    <div class="cv-auth-card cv-scale-in" style="opacity: 0;">
+      <div class="auth-header">
+        <a href="/pages/index.html" class="cv-navbar-brand" style="justify-content: center;">
+          <div class="brand-icon">🎬</div>
+          <span>CineVault</span>
+        </a>
+        <h2 id="authTitle">Welcome Back</h2>
+        <p id="authSubtitle">Sign in to book your next movie</p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="cv-auth-tabs">
+        <button class="cv-auth-tab active" id="loginTab" onclick="switchTab('login')">Login</button>
+        <button class="cv-auth-tab" id="signupTab" onclick="switchTab('signup')">Sign Up</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="cv-input-group">
+          <label for="loginEmail">Email Address</label>
+          <input type="email" class="cv-input" id="loginEmail" placeholder="you@example.com" required>
+        </div>
+        <div class="cv-input-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" class="cv-input" id="loginPassword" placeholder="••••••••" required minlength="6">
+        </div>
+        <button type="submit" class="cv-btn cv-btn-primary cv-ripple" style="width: 100%; margin-bottom: 16px;" id="loginBtn">
+          <i class="bi bi-box-arrow-in-right"></i> Sign In
+        </button>
+        <p style="text-align: center; font-size: 0.82rem; color: var(--cv-text-muted);">
+          Demo: <strong>demo@cinevault.com</strong> / <strong>password123</strong>
+        </p>
+      </form>
+
+      <!-- Signup Form -->
+      <form id="signupForm" style="display: none;" onsubmit="handleSignup(event)">
+        <div class="cv-input-group">
+          <label for="signupName">Full Name</label>
+          <input type="text" class="cv-input" id="signupName" placeholder="John Doe" required>
+        </div>
+        <div class="cv-input-group">
+          <label for="signupEmail">Email Address</label>
+          <input type="email" class="cv-input" id="signupEmail" placeholder="you@example.com" required>
+        </div>
+        <div class="cv-input-group">
+          <label for="signupPassword">Password</label>
+          <input type="password" class="cv-input" id="signupPassword" placeholder="Min 6 characters" required minlength="6">
+        </div>
+        <div class="cv-input-group">
+          <label for="signupConfirm">Confirm Password</label>
+          <input type="password" class="cv-input" id="signupConfirm" placeholder="••••••••" required minlength="6">
+        </div>
+        <button type="submit" class="cv-btn cv-btn-primary cv-ripple" style="width: 100%;" id="signupBtn">
+          <i class="bi bi-person-plus"></i> Create Account
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script>
+    function switchTab(tab) {
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+      const loginTab = document.getElementById('loginTab');
+      const signupTab = document.getElementById('signupTab');
+      const title = document.getElementById('authTitle');
+      const subtitle = document.getElementById('authSubtitle');
+
+      if (tab === 'login') {
+        loginForm.style.display = 'block';
+        signupForm.style.display = 'none';
+        loginTab.classList.add('active');
+        signupTab.classList.remove('active');
+        title.textContent = 'Welcome Back';
+        subtitle.textContent = 'Sign in to book your next movie';
+      } else {
+        loginForm.style.display = 'none';
+        signupForm.style.display = 'block';
+        loginTab.classList.remove('active');
+        signupTab.classList.add('active');
+        title.textContent = 'Join CineVault';
+        subtitle.textContent = 'Create an account to get started';
+      }
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const btn = document.getElementById('loginBtn');
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      showButtonLoading(btn, 'Signing in...');
+
+      try {
+        const result = await loginUser(email, password);
+        saveAuth(result.token, result.user);
+        showToast(`Welcome back, ${result.user.name}!`, 'success');
+
+        // Redirect
+        const redirect = getUrlParam('redirect');
+        setTimeout(() => {
+          window.location.href = redirect || '/pages/index.html';
+        }, 800);
+      } catch (err) {
+        showToast(err.message, 'error');
+        hideButtonLoading(btn);
+      }
+    }
+
+    async function handleSignup(e) {
+      e.preventDefault();
+      const btn = document.getElementById('signupBtn');
+      const name = document.getElementById('signupName').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      const password = document.getElementById('signupPassword').value;
+      const confirm = document.getElementById('signupConfirm').value;
+
+      if (password !== confirm) {
+        showToast('Passwords do not match', 'error');
+        return;
+      }
+
+      showButtonLoading(btn, 'Creating account...');
+
+      try {
+        const result = await signupUser(name, email, password);
+        saveAuth(result.token, result.user);
+        showToast(`Welcome to CineVault, ${result.user.name}!`, 'success');
+
+        const redirect = getUrlParam('redirect');
+        setTimeout(() => {
+          window.location.href = redirect || '/pages/index.html';
+        }, 800);
+      } catch (err) {
+        showToast(err.message, 'error');
+        hideButtonLoading(btn);
+      }
+    }
+
+    // Redirect if already logged in
+    document.addEventListener('DOMContentLoaded', () => {
+      if (isLoggedIn()) {
+        const redirect = getUrlParam('redirect');
+        window.location.href = redirect || '/pages/index.html';
+      }
+    });
+  </script>
+</body>
+</html>

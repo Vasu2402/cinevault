@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Browse all movies on CineVault. Filter by genre, search by title, and book tickets instantly.">
+  <title>Movies — CineVault</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/animations.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="cv-navbar scrolled" id="mainNavbar">
+    <div class="container">
+      <a href="/pages/index.html" class="cv-navbar-brand">
+        <div class="brand-icon">🎬</div>
+        <span>CineVault</span>
+      </a>
+      <button class="cv-nav-toggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="cv-nav-links">
+        <li><a href="/pages/index.html">Home</a></li>
+        <li><a href="/pages/movies.html" class="active">Movies</a></li>
+        <li><a href="/pages/my-bookings.html">My Bookings</a></li>
+      </ul>
+      <div class="cv-nav-right"></div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <section style="padding-top: 100px; padding-bottom: 20px;">
+    <div class="cv-container">
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <h1 class="cv-fade-in-up">All <span class="cv-text-gradient">Movies</span></h1>
+          <p class="cv-fade-in-up cv-delay-1" style="opacity: 0;">Discover and book tickets for the latest blockbusters</p>
+        </div>
+        <div class="col-lg-6">
+          <div class="cv-fade-in-up cv-delay-2" style="opacity: 0;">
+            <div style="position: relative;">
+              <input type="text" class="cv-input" id="searchInput" placeholder="Search movies, actors, directors..."
+                     style="padding-left: 44px;"
+                     oninput="searchMovies(this.value)">
+              <i class="bi bi-search" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--cv-text-muted);"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Genre Filters -->
+  <section style="padding: 10px 0 20px;">
+    <div class="cv-container">
+      <div class="cv-genre-pills" id="genreFilters">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Movies Grid -->
+  <section class="cv-section" style="padding-top: 10px;">
+    <div class="cv-container">
+      <div class="row" id="moviesGrid">
+        <!-- Populated by JS with skeletons then real cards -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="cv-footer">
+    <div class="cv-container">
+      <div class="cv-footer-bottom" style="border-top: none; padding-top: 0;">
+        <span>© 2026 CineVault. All rights reserved.</span>
+        <div style="display: flex; gap: 16px;">
+          <a href="#"><i class="bi bi-twitter-x"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-facebook"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script src="/assets/js/movies.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check for genre in URL
+      const urlGenre = getUrlParam('genre');
+      if (urlGenre) currentGenre = urlGenre;
+      loadMovies();
+    });
+  </script>
+</body>
+</html>
