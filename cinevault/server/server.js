@@ -89,4 +89,25 @@ const start = async () => {
   }
 };
 
-start();
+let isInitialized = false;
+
+if (process.env.VERCEL) {
+  // On Vercel, export a function to handle requests statelessly
+  module.exports = async (req, res) => {
+    if (!isInitialized) {
+      try {
+        await connectDB();
+        await sequelize.sync({ alter: true });
+        await createApolloServer(app);
+        isInitialized = true;
+      } catch (error) {
+        console.error('❌ Vercel Initialization failed:', error);
+        return res.status(500).json({ error: 'Server Initialization Failed' });
+      }
+    }
+    return app(req, res);
+  };
+} else {
+  // Local or traditional server deployment (Railway, etc.)
+  start();
+}
